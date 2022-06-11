@@ -1,7 +1,8 @@
 # Image Resizer API
 
-Image Resizer is a custom API to resize image and retrieve resized images. It runs on an Express server.
-It is set to run on port 3001.
+Image Resizer is a custom API to resize image and retrieve resized images. 
+It runs on an Express server.
+It is set to run on port 3001 (feel free to change as you wish).
 
 ## Running the Express server
 
@@ -38,10 +39,15 @@ http://localhost:3001/images?filename=icelandwaterfall.jpg&height=300  (only hei
 
 
 ## Utilized Node Packages & Modules
-1. [Express](https://expressjs.com/)
-2. [Sharp](https://www.npmjs.com/package/sharp)
-3. [FileSystem](https://www.npmjs.com/package/fs)
+* [Express](https://expressjs.com/)
+* [Sharp](https://www.npmjs.com/package/sharp)
+* [FileSystem](https://www.npmjs.com/package/fs)
+* [Jasmine (Testing)](https://www.npmjs.com/package/jasmine)
+
 
 ## Development Commands
+* Run server: ```npm run start```
 * Run tests: ```npm run test ```
 * Compile code: ```npm run build```
+
+These commands can be configured in **package.json** file.
