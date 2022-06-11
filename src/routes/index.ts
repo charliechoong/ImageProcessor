@@ -1,13 +1,12 @@
-import express from "express";
-import images from "./api/images";
-import { promises as fsPromises } from "fs";
+import { Router as router } from 'express'
+import images from './api/images'
 
-const routes = express.Router();
+const routes = router()
 
-routes.get("/", (req, res) => {
-  res.send("Welcome to Image Processing API.");
-});
+routes.get('/', (req, res) => {
+  res.send('Welcome to Image Processing API.')
+})
 
-routes.use("/images", images);
+routes.use('/images', images)
 
-export default routes;
+export default routes

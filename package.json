@@ -8,7 +8,8 @@
     "test": "npm run build && npm run jasmine",
     "jasmine": "jasmine ",
     "build": "npx tsc",
-    "prettier": "prettier src"
+    "lint": "eslint 'src/index.ts'",
+    "prettier": "prettier --config .prettierrc.json '**/**.ts' --write"
   },
   "keywords": [],
   "author": "Charlie Choong",
@@ -27,7 +28,10 @@
     "@types/jasmine": "^4.0.3",
     "@types/node": "^17.0.42",
     "@types/sharp": "^0.30.4",
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
     "eslint": "^8.17.0",
+    "eslint-config-google": "^0.14.0",
     "jasmine": "^4.2.0",
     "nodemon": "^2.0.16",
     "prettier": "^2.6.2",

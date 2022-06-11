@@ -1,11 +1,11 @@
-import express from "express";
-import routes from "./routes";
+import express from 'express'
+import routes from './routes'
 
-const app = express();
-const port = 3001;
+const app = express()
+const port = 3001
 
-app.listen(port, () => console.log(`Server running on port ${port}`));
+app.listen(port, () => console.log(`Server running on port ${port}`))
 
-app.use("/", routes);
+app.use('/', routes)
 
-export default app;
+export default app
