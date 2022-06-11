@@ -42,9 +42,9 @@ http://localhost:3001/images?filename=icelandwaterfall.jpg&height=300  (only hei
 * [Express](https://expressjs.com/)
 * [Sharp](https://www.npmjs.com/package/sharp)
 * [FileSystem](https://www.npmjs.com/package/fs)
-* [Jasmine (Testing)](https://www.npmjs.com/package/jasmine)
-* [Prettier](https://www.npmjs.com/package/prettier)
-* [EsLint](https://www.npmjs.com/package/eslint)
+* [Jasmine](https://www.npmjs.com/package/jasmine): Testing Purpose
+* [Prettier](https://www.npmjs.com/package/prettier): Formatting Purpose
+* [EsLint](https://www.npmjs.com/package/eslint): Formatting Purpose
 
 
 ## Development Commands
