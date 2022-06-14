@@ -58,15 +58,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
+var express_1 = require("express");
 var fs_1 = __importStar(require("fs"));
-var sharp_1 = __importDefault(require("sharp"));
-var images = express_1.default.Router();
-images.get("/", function (req, res) {
+var utilities_1 = require("../../utilities");
+var images = (0, express_1.Router)();
+images.get('/', function (req, res) {
     // Extract query parameters
     var filename = req.query.filename;
     var width = parseInt(req.query.width);
@@ -74,36 +71,44 @@ images.get("/", function (req, res) {
     // Paths for source file and resized file
     var filepath = "./images/".concat(filename);
     var outpath = "./resized/".concat(filename);
-    // If either width or height is not specified, return image stored in resized.
-    // If image does not exist, return error
+    // If either width or height is not specified, display error message.
     if (Number.isNaN(width) || Number.isNaN(height)) {
-        fs_1.promises.access(outpath, fs_1.default.constants.R_OK)
-            .then(function () { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
-            return [2 /*return*/, res.status(200).sendFile(outpath, { root: __dirname + "../../../../" })];
-        }); }); })
-            .catch(function () { return res.status(400).end("Image does not exist. Please provide correct filename, width and height."); });
+        res.status(400).end('Error: Width or height parameters not specified correctly.');
         return;
     }
-    // Access image in /images and resize accordingly
-    fs_1.promises.access(filepath, fs_1.default.constants.R_OK)
-        .then(function () { return __awaiter(void 0, void 0, void 0, function () {
-        var file;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, fs_1.promises.readFile(filepath)];
-                case 1:
-                    file = _a.sent();
-                    (0, sharp_1.default)(file).resize(width, height).toFile(outpath, function (err, info) {
-                        if (err) {
-                            console.log("Error: ".concat(err));
-                            return;
+    // Check if resized image already exists, and handle cases.
+    fs_1.promises
+        .access(outpath, fs_1.default.constants.R_OK)
+        // If resized image already exists in output folder, return it instead.
+        .then(function () {
+        res.status(200).sendFile(outpath, { root: __dirname + '../../../../' });
+    })
+        // Otherwise, access image in /images, resize accordingly, and store in /resized folder.
+        .catch(function () {
+        fs_1.promises
+            .access(filepath, fs_1.default.constants.R_OK)
+            .then(function () { return __awaiter(void 0, void 0, void 0, function () {
+            var file, processed;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, fs_1.promises.readFile(filepath)];
+                    case 1:
+                        file = _a.sent();
+                        return [4 /*yield*/, (0, utilities_1.processImage)(file, outpath, width, height)];
+                    case 2:
+                        processed = _a.sent();
+                        if (processed) {
+                            res.status(200).sendFile(outpath, { root: __dirname + '../../../../' });
                         }
-                        res.status(200).sendFile(outpath, { root: __dirname + "../../../../" });
-                    });
-                    return [2 /*return*/];
-            }
+                        return [2 /*return*/];
+                }
+            });
+        }); })
+            .catch(function () {
+            return res
+                .status(400)
+                .end('Cannot read specified file! Please ensure image exists.');
         });
-    }); })
-        .catch(function () { return res.status(400).end("Cannot read specified file! Please ensure image exists."); });
+    });
 });
 exports.default = images;

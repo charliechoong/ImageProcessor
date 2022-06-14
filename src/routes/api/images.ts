@@ -1,6 +1,5 @@
 import { Router as router, Request, Response } from 'express'
 import fs, { promises as fsPromises } from 'fs'
-import sharp, { OutputInfo } from 'sharp'
 import { processImage } from '../../utilities'
 
 const images = router()

@@ -35,78 +35,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var __1 = __importDefault(require("../../"));
-var supertest_1 = __importDefault(require("supertest"));
-var request = (0, supertest_1.default)(__1.default);
-describe('Test for root path', function () {
-    it('should return status code 200', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
+var fs_1 = require("fs");
+var utilities_1 = require("../../utilities");
+describe('Test for image resizing', function () {
+    var outputFilePath;
+    var validImageFile;
+    beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
+        var imageFilePath;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/')];
+                case 0:
+                    imageFilePath = "./images/palmtunnel.jpg";
+                    outputFilePath = "./resized/testPalmTunnel.jpg";
+                    return [4 /*yield*/, fs_1.promises.readFile(imageFilePath).then(function (file) { return validImageFile = file; }).catch(function (err) { return console.log(err); })];
                 case 1:
-                    response = _a.sent();
-                    expect(response.status).toBe(200);
+                    _a.sent();
                     return [2 /*return*/];
             }
         });
     }); });
-    it('should return welcome message', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
+    it('should return true', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var result;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/')];
+                case 0: return [4 /*yield*/, (0, utilities_1.processImage)(validImageFile, outputFilePath, 250, 150)];
                 case 1:
-                    response = _a.sent();
-                    expect(response.text).toBe('Welcome to Image Processing API.');
+                    result = _a.sent();
+                    expect(result).toBeTrue();
                     return [2 /*return*/];
             }
         });
     }); });
-});
-describe('Test for /images endpoints', function () {
-    describe('No width/height specified', function () {
-        it('should return status code 400', function () { return __awaiter(void 0, void 0, void 0, function () {
-            var response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, request.get('/images?filename=fjord.jpg&width=200')];
-                    case 1:
-                        response = _a.sent();
-                        expect(response.status).toBe(400);
-                        return [2 /*return*/];
-                }
-            });
-        }); });
-    });
-    describe('Improper query parameters', function () {
-        it('should return status code 400 due to invalid format', function () { return __awaiter(void 0, void 0, void 0, function () {
-            var response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, request.get('/images?fjord.jpg&width=200')];
-                    case 1:
-                        response = _a.sent();
-                        expect(response.status).toBe(400);
-                        return [2 /*return*/];
-                }
-            });
-        }); });
-        it('should return status code 400 due to non-existent image', function () { return __awaiter(void 0, void 0, void 0, function () {
-            var response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, request.get('/images?filename=fjor.jpg&width=200')];
-                    case 1:
-                        response = _a.sent();
-                        expect(response.status).toBe(400);
-                        return [2 /*return*/];
-                }
-            });
-        }); });
-    });
 });

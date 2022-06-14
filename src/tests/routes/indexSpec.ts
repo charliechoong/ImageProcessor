@@ -4,7 +4,7 @@ import supertest from 'supertest'
 const request = supertest(app)
 
 describe('Test for root path', () => {
-  it('should return welcome message', async () => {
+  it('should return status code 200', async () => {
     const response = await request.get('/')
     expect(response.status).toBe(200)
   })
@@ -17,9 +17,9 @@ describe('Test for root path', () => {
 
 describe('Test for /images endpoints', () => {
   describe('No width/height specified', () => {
-    it('should return status code 200', async () => {
+    it('should return status code 400', async () => {
       const response = await request.get('/images?filename=fjord.jpg&width=200')
-      expect(response.status).toBe(200)
+      expect(response.status).toBe(400)
     })
   })
 
