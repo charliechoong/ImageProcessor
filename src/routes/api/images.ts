@@ -1,6 +1,7 @@
 import { Router as router, Request, Response } from 'express'
 import fs, { promises as fsPromises } from 'fs'
 import sharp, { OutputInfo } from 'sharp'
+import { processImage } from '../../utilities'
 
 const images = router()
 
@@ -19,7 +20,7 @@ images.get('/', (req: Request, res: Response): void => {
   if (Number.isNaN(width) || Number.isNaN(height)) {
     fsPromises
       .access(outpath, fs.constants.R_OK)
-      .then(async () =>
+      .then(() =>
         res.status(200).sendFile(outpath, { root: __dirname + '../../../../' })
       )
       .catch(() =>
@@ -34,18 +35,11 @@ images.get('/', (req: Request, res: Response): void => {
   fsPromises
     .access(filepath, fs.constants.R_OK)
     .then(async () => {
-      const file = await fsPromises.readFile(filepath)
-      sharp(file)
-        .resize(width, height)
-        .toFile(outpath, (err: Error, info: OutputInfo) => {
-          if (err) {
-            console.log(`Error: ${err}`)
-            return
-          }
-          res
-            .status(200)
-            .sendFile(outpath, { root: __dirname + '../../../../' })
-        })
+      const file = await fsPromises.readFile(filepath);
+      const result = await processImage(file, outpath, width, height);
+      if (result === 0) {
+        res.status(200).sendFile(outpath, { root: __dirname + '../../../../' });
+      }
     })
     .catch(() =>
       res
