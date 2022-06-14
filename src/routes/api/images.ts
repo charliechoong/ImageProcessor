@@ -36,8 +36,8 @@ images.get('/', (req: Request, res: Response): void => {
     .access(filepath, fs.constants.R_OK)
     .then(async () => {
       const file = await fsPromises.readFile(filepath);
-      const result = await processImage(file, outpath, width, height);
-      if (result === 0) {
+      const processed = await processImage(file, outpath, width, height);
+      if (processed) {
         res.status(200).sendFile(outpath, { root: __dirname + '../../../../' });
       }
     })
