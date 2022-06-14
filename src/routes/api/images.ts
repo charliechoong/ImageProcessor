@@ -21,21 +21,30 @@ images.get('/', (req: Request, res: Response): void => {
     return;
   }
 
-  // Access image in /images, resize accordingly, and store in /resized folder.
+  // Check if resized image already exists, and handle cases.
   fsPromises
-    .access(filepath, fs.constants.R_OK)
-    .then(async () => {
-      const file = await fsPromises.readFile(filepath);
-      const processed = await processImage(file, outpath, width, height);
-      if (processed) {
-        res.status(200).sendFile(outpath, { root: __dirname + '../../../../' });
-      }
+    .access(outpath, fs.constants.R_OK)
+    // If resized image already exists in output folder, return it instead.
+    .then(() => {
+      res.status(200).sendFile(outpath, { root: __dirname + '../../../../' });
     })
-    .catch(() =>
-      res
-        .status(400)
-        .end('Cannot read specified file! Please ensure image exists.')
-    )
+    // Otherwise, access image in /images, resize accordingly, and store in /resized folder.
+    .catch(() => {
+      fsPromises
+      .access(filepath, fs.constants.R_OK)
+      .then(async () => {
+        const file = await fsPromises.readFile(filepath);
+        const processed = await processImage(file, outpath, width, height);
+        if (processed) {
+          res.status(200).sendFile(outpath, { root: __dirname + '../../../../' });
+        }
+      })
+      .catch(() =>
+        res
+          .status(400)
+          .end('Cannot read specified file! Please ensure image exists.')
+      )
+    })
 })
 
 export default images;
