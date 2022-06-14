@@ -8,8 +8,8 @@
     "test": "npm run build && npm run jasmine",
     "jasmine": "jasmine ",
     "build": "npx tsc",
-    "lint": "eslint '**/**.ts'",
-    "prettier": "prettier --config .prettierrc.json '**/**.ts' --write"
+    "lint": "eslint . --ext .ts",
+    "prettier": "prettier --config .prettierrc.json **/**.ts --write"
   },
   "keywords": [],
   "author": "Charlie Choong",
