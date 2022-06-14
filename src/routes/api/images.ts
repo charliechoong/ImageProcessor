@@ -15,23 +15,13 @@ images.get('/', (req: Request, res: Response): void => {
   const filepath = `./images/${filename}`
   const outpath = `./resized/${filename}`
 
-  // If either width or height is not specified, return image stored in resized.
-  // If image does not exist, return error
+  // If either width or height is not specified, display error message.
   if (Number.isNaN(width) || Number.isNaN(height)) {
-    fsPromises
-      .access(outpath, fs.constants.R_OK)
-      .then(() =>
-        res.status(200).sendFile(outpath, { root: __dirname + '../../../../' })
-      )
-      .catch(() =>
-        res
-          .status(400)
-          .end('Error: Please provide correct filename, width and height.')
-      )
-    return
+    res.status(400).end('Error: Width or height parameters not specified correctly.');
+    return;
   }
 
-  // Access image in /images and resize accordingly
+  // Access image in /images, resize accordingly, and store in /resized folder.
   fsPromises
     .access(filepath, fs.constants.R_OK)
     .then(async () => {
@@ -48,4 +38,4 @@ images.get('/', (req: Request, res: Response): void => {
     )
 })
 
-export default images
+export default images;
