@@ -1,6 +1,6 @@
 # Image Resizer API
 
-Image Resizer is a custom API to resize image and retrieve resized images. 
+Image Resizer is a custom API to resize image integreated with simple caching. 
 It runs on an Express server.
 It is set to run on port 3001 (feel free to change as you wish).
 
@@ -27,11 +27,11 @@ npm run start
 ```
 http://localhost:3001/images?filename=icelandwaterfall.jpg&height=300&width=200
 ```
-If width or height is not specified, if image already exists in target folder, it will be displayed instead.
+Resized images will be cached, and reused when accessed again.
 
-### To view a resized image
-1. Type `http://localhost:3001/images?filename=<image filename>` onto any browser
-#### Examples:
+### Invalid URLs
+If filename, width, or height is not specified correctly as url parameters
+If filename does not exist
 ```
 http://localhost:3001/images?filename=icelandwaterfall.jpg
 http://localhost:3001/images?filename=icelandwaterfall.jpg&height=300  (only height specified)
@@ -51,5 +51,7 @@ http://localhost:3001/images?filename=icelandwaterfall.jpg&height=300  (only hei
 * Run server: ```npm run start```
 * Run tests: ```npm run test ```
 * Compile code: ```npm run build```
+* Prettify code: ```npm run prettier```
+* Lint code: ```npm run lint```
 
 These commands can be configured in **package.json** file.
