@@ -6,13 +6,21 @@ const images = router()
 
 images.get('/', (req: Request, res: Response): void => {
   // Extract query parameters
-  const filename = req.query.filename
+  const queryFilename = req.query.filename
+  let filename = queryFilename
+  // trim extension, if exists
+  if (typeof queryFilename === 'string') {
+    const index =  queryFilename.indexOf('.')
+    if (index >= 0) { 
+      filename = queryFilename.substring(0, queryFilename.indexOf('.'))
+    }
+  }
   const width: number = parseInt(req.query.width as string)
   const height: number = parseInt(req.query.height as string)
 
   // Paths for source file and resized file
-  const filepath = `./images/${filename}`
-  const outpath = `./resized/${filename}`
+  const filepath = `./images/${filename}.jpg`
+  const outpath = `./resized/${filename}_${width}x${height}.jpg`
 
   // If either width or height is not specified, display error message.
   if (Number.isNaN(width) || Number.isNaN(height)) {
@@ -25,7 +33,7 @@ images.get('/', (req: Request, res: Response): void => {
   // Check if resized image already exists, and handle cases.
   fsPromises
     .access(outpath, fs.constants.R_OK)
-    // If resized image already exists in output folder, return it instead.
+    // If resized image already exists in output folder, return cached instead.
     .then(() => {
       res.status(200).sendFile(outpath, { root: __dirname + '../../../../' })
     })
