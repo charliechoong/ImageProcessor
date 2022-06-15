@@ -1,6 +1,6 @@
 # Image Resizer API
 
-Image Resizer is a custom API to resize image integreated with simple caching. 
+Image Resizer is a custom API to resize image integrated with simple caching. 
 It runs on an Express server.
 It is set to run on port 3001 (feel free to change as you wish).
 
@@ -22,7 +22,7 @@ npm run start
 
 ### To resize an image
 1. Place image in /images folder. 
-2. Type `http://localhost:3001/images?filename=<image filename>&height=<image height>&width=<image width>` onto any browser
+2. Type `http://localhost:3001/images?filename=<image filename>&height=<image height>&width=<image width>` onto any browser, where <strong>image height</strong> and <strong>image width</strong> are desired resized dimensions.
 #### Example:
 ```
 http://localhost:3001/images?filename=icelandwaterfall.jpg&height=300&width=200
